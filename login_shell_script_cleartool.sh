@@ -5,25 +5,53 @@ echo
 set user = `/usr/ucb/whoami`
 
 echo "Select own view or enter 'others' for other view or 'user' for other user component:"
-cleartool lsview | grep $user
 
 #Taking user input
-echo "Enter the view component: "
-set req = $<
-if ($req == "others") then
-    echo "Enter the whole viewname you want to choose: "
-    set viewname = $<
-else if ($req == "user") then
-    echo "Enter user-id: "
-    set usr1 = $<
-    echo "Listing views..."
-    cleartool lsview | grep $usr1
-    echo "Enter the view component: "
-    set comp = $<
-    set viewname = $usr1"."$comp
-else
-    set viewname = $user"."$req
-endif
+while (1)
+    echo "Select choice -->"
+    echo "1. Use own view"
+    echo "2. Enter whole viewname"
+    echo "3. Use view of other user"
+    echo "What would you want?"
+    set choice = $<
+    if ($choice == 1) then
+        echo "Showing own view-list -->"
+        cleartool lsview | grep $user
+        echo "Enter the view component: "
+        set req = $<
+# FOLLOWING CODE CAN ALSO BE USED FOR SHORTER EXECUTION.....
+#if ($req == "others") then
+#   echo "Enter the whole viewname you want to choose: "
+#   set viewname = $<
+#else if ($req == "user") then
+#   echo "Enter user-id: "
+#   set usr1 = $<
+#   echo "Listing views..."
+#    cleartool lsview | grep $usr1
+#    echo "Enter the view component: "
+#    set comp = $<
+#    set viewname = $usr1"."$comp
+#else
+        set viewname = $user"."$req
+        break
+    else if ($choice == 2) then
+        echo "Enter the whole view-name that you want to use: "
+        set viewname = $<
+        break
+    else if ($choice == 3) then
+        echo "Enter user-id: "
+        set usr1 = $<
+        echo "Listing views..."
+        cleartool lsview | grep $usr1
+        echo "Enter view component:"
+        set comp = $<
+        set viewname = $usr1"."$comp
+        break
+    else
+        echo "Wrong option chosen..."
+        #set viewname = "amajumda.main"
+    endif
+end
 set TERM = xterm
 set host = `hostname`
 echo $host
@@ -44,6 +72,6 @@ echo "################################################"
 echo -n "Config spec of view: "
 #cleartool setview -exec "catcs | sed -n 3p | awk '{print substr($2,25)}'" $viewname
 cleartool setview -exec "catcs | sed -n 3p| cut -d ' ' -f2" $viewname
-# Above might not always work, as the cs may not be the 6th element of splitted crap all the time...
+# Above might not always work, as the cs may not be the 6th element of splitted shit all the time...
 #cleartool setview -exec "catcs | sed -n 3p" $viewname
 sv -f $viewname
