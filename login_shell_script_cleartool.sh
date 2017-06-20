@@ -44,6 +44,6 @@ echo "################################################"
 echo -n "Config spec of view: "
 #cleartool setview -exec "catcs | sed -n 3p | awk '{print substr($2,25)}'" $viewname
 cleartool setview -exec "catcs | sed -n 3p| cut -d ' ' -f2" $viewname
-# Above might not always work, as the cs may not be the 6th element of splitted shit all the time...
+# Above might not always work, as the cs may not be the 6th element of splitted crap all the time...
 #cleartool setview -exec "catcs | sed -n 3p" $viewname
 sv -f $viewname
